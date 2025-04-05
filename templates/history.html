@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Analysis History</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body class="bg-gray-100 min-h-screen">
+  <nav class="bg-blue-600 p-4 mb-6">
+    <div class="container mx-auto flex justify-between items-center">
+      <h1 class="text-2xl text-white font-bold">Grammar Scorer</h1>
+      <div class="space-x-4">
+        <a href="/" class="text-white hover:underline">Home</a>
+        <a href="/history" class="text-white hover:underline">History</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold text-blue-600 mb-6">Analysis History</h1>
+    
+    <div class="bg-white rounded-lg shadow-md overflow-hidden">
+      <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-gray-50">
+          <tr>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Score</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Preview</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Feedback</th>
+          </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+          {% for analysis in analyses %}
+          <tr class="hover:bg-gray-50">
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+              {{ analysis.timestamp.strftime('%Y-%m-%d %H:%M') }}
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+                {% if analysis.score > 80 %}bg-green-100 text-green-800
+                {% elif analysis.score > 60 %}bg-yellow-100 text-yellow-800
+                {% else %}bg-red-100 text-red-800{% endif %}">
+                {{ analysis.score }}
+              </span>
+            </td>
+            <td class="px-6 py-4 text-sm text-gray-500">
+              {{ analysis.transcription[:50] }}{% if analysis.transcription|length > 50 %}...{% endif %}
+            </td>
+            <td class="px-6 py-4 text-sm text-gray-500">
+              {{ analysis.feedback }}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</body>
+</html>
